@@ -1,8 +1,8 @@
-package com.works
+package com.works.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.Snackbar
-import com.works.activity.RegisterActivity
+import com.works.R
 import com.works.models.LoginRequest
 import com.works.models.LoginResponse
 import com.works.service.JsonBulut
@@ -21,7 +21,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
+
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
+
 
     lateinit var jsonBulut: JsonBulut
 
@@ -34,13 +38,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
         l_txtEmail = findViewById(R.id.l_txtEmail)
         l_txtPassword = findViewById(R.id.l_txtPassword)
         l_btnLogin = findViewById(R.id.l_btnLogin)
         l_btnRegister = findViewById(R.id.l_btnRegister)
 
+        sharedPreferences = getSharedPreferences("app_pref", MODE_PRIVATE)
+        editor = sharedPreferences.edit()
         jsonBulut = Client.retrofit.create(JsonBulut::class.java)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -72,8 +78,12 @@ class MainActivity : AppCompatActivity() {
                         if (p1!!.isSuccessful) {
                             val response = p1.body()
                             val token = response!!.data.access_token
-                            Log.d("token", token)
-                            showToast("Login successful")
+                            editor.putString("token", token)
+                            editor.putString("name", response.data.user.name)
+                            editor.commit()
+                            val intent = Intent(applicationContext, DashboardActivity::class.java)
+                            startActivity(intent)
+                            finish()
                         }else {
                             showSnackBar("Email or password is not valid")
                         }
