@@ -18,6 +18,7 @@
         android:titleTextColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:popupTheme="@style/MenuStyle"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

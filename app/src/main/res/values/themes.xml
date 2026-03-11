@@ -5,5 +5,10 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="MenuStyle">
+        <item name="backgroundColor">#F6F6F6</item>
+        <item name="android:popupBackground">#F6F6F6</item>
+    </style>
+
     <style name="Theme.Ykb_2026_andorid" parent="Base.Theme.Ykb_2026_andorid" />
 </resources>
