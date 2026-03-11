@@ -6,15 +6,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.works.R
+import com.works.adapter.ProductAdapter
 import com.works.models.ProductsResponse
 import com.works.service.JsonBulut
 import com.works.utils.Client
 import retrofit2.Call
 import retrofit2.Response
+import androidx.recyclerview.widget.LinearLayoutManager
 
 class ProductsActivity : AppCompatActivity() {
 
+    lateinit var productRecyclerView: RecyclerView
     lateinit var jsonBulut: JsonBulut
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +26,8 @@ class ProductsActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_products)
 
+        productRecyclerView = findViewById(R.id.productRecyclerView)
+        productRecyclerView.layoutManager = LinearLayoutManager(this)
         jsonBulut = Client.retrofit.create(JsonBulut::class.java)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -39,7 +45,7 @@ class ProductsActivity : AppCompatActivity() {
                 if (p1!!.isSuccessful) {
                     val productsResponse = p1.body()
                     val products = productsResponse!!.data
-                    Log.d("TAG", products.toString())
+                    productRecyclerView.adapter = ProductAdapter(products)
                 }
             }
 
