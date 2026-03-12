@@ -14,9 +14,12 @@ import com.works.databinding.FragmentTodoBinding
 import com.works.models.DocTodo
 import com.works.models.Todo
 import yuku.ambilwarna.AmbilWarnaDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.works.adapter.TodoAdapter
 
 class TodoFragment : Fragment() {
 
+    lateinit var adapter: TodoAdapter
     val db = Firebase.firestore
     val dotoList = ArrayList<DocTodo>()
 
@@ -30,6 +33,9 @@ class TodoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTodoBinding.inflate(inflater, container, false)
+        adapter = TodoAdapter(dotoList)
+        binding.rvTodoList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvTodoList.adapter = adapter
         return binding.root
     }
 
@@ -49,8 +55,8 @@ class TodoFragment : Fragment() {
                 val docTodo = DocTodo(document.id, todo)
                 dotoList.add(docTodo)
             }
+            adapter.notifyDataSetChanged()
             Log.d("TodoFragment", "dotoList: $dotoList")
-
         }
 
 
@@ -63,7 +69,9 @@ class TodoFragment : Fragment() {
             // Firebase Firestore'a kaydetme işlemi
             db.collection("todos").add(todo)
             .addOnSuccessListener { documentReference ->
-                documentReference.id
+                val docTodo = DocTodo(documentReference.id, todo)
+                dotoList.add(docTodo)
+                adapter.notifyDataSetChanged()
                 Toast.makeText(requireContext(), "Todo kaydedildi", Toast.LENGTH_SHORT).show()
                 clearInputs()
             }
