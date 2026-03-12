@@ -1,11 +1,14 @@
 package com.works.activity
 
 import android.os.Bundle
-import android.util.Log
+import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.works.R
 import com.works.models.ProductDetailResponse
 import com.works.service.JsonBulut
@@ -18,29 +21,65 @@ class ProductDetailActivity : AppCompatActivity() {
 
     lateinit var jsonBulut: JsonBulut
 
+    lateinit var imgProduct: ImageView
+    lateinit var txtTitle: TextView
+    lateinit var txtBrand: TextView
+    lateinit var txtPrice: TextView
+    lateinit var txtDiscount: TextView
+    lateinit var txtStock: TextView
+    lateinit var txtDescription: TextView
+    lateinit var ratingBar: RatingBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_product_detail)
 
+        // View Tanımları
+        imgProduct = findViewById(R.id.imgProduct)
+        txtTitle = findViewById(R.id.txtTitle)
+        txtBrand = findViewById(R.id.txtBrand)
+        txtPrice = findViewById(R.id.txtPrice)
+        txtDiscount = findViewById(R.id.txtDiscount)
+        txtStock = findViewById(R.id.txtStock)
+        txtDescription = findViewById(R.id.txtDescription)
+        ratingBar = findViewById(R.id.ratingBar)
+
         val id = intent.getIntExtra("id", 0)
+
         if (id == 0) {
             finish()
-        }else {
+        } else {
+
             jsonBulut = Client.retrofit.create(JsonBulut::class.java)
+
             val call = jsonBulut.productDetail(id)
-            call.enqueue(object: Callback<ProductDetailResponse> {
-                override fun onResponse(p0: Call<ProductDetailResponse?>?, p1: Response<ProductDetailResponse?>?) {
-                    if (p1!!.isSuccessful) {
-                        val productDetailResponse = p1.body()
-                        val product = productDetailResponse!!.data
-                        Log.e("product", product.toString())
+
+            call.enqueue(object : Callback<ProductDetailResponse> {
+
+                override fun onResponse(call: Call<ProductDetailResponse>, response: Response<ProductDetailResponse>) {
+
+                    if (response.isSuccessful) {
+                        val product = response.body()!!.data
+                        txtTitle.text = product.title
+                        txtBrand.text = "Brand : ${product.brand}"
+                        txtPrice.text = "$${product.price}"
+                        txtDiscount.text = "%${product.discountPercentage} indirim"
+                        txtStock.text = "Stock : ${product.stock}"
+                        txtDescription.text = product.description
+                        ratingBar.rating = product.rating.toFloat()
+                        if (product.images.isNotEmpty()) {
+                            Glide
+                                .with(this@ProductDetailActivity)
+                                .load(product.images[0])
+                                .into(imgProduct)
+                        }
                     }
                 }
 
-                override fun onFailure(p0: Call<ProductDetailResponse?>?, p1: Throwable?) {
-                    TODO("Not yet implemented")
+                override fun onFailure(call: Call<ProductDetailResponse>, t: Throwable) {
+                    t.printStackTrace()
                 }
 
             })
@@ -52,5 +91,4 @@ class ProductDetailActivity : AppCompatActivity() {
             insets
         }
     }
-
 }

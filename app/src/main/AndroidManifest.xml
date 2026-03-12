@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ykb_2026_andorid">
         <activity
+            android:name=".activity.NotesActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ProductDetailActivity"
             android:exported="false" />
         <activity

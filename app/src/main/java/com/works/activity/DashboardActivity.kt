@@ -51,8 +51,8 @@ class DashboardActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.d_MenuNotes -> {
-                // Notes
-                Log.d("TAG", "d_MenuNotes")
+                val intent = Intent(this, NotesActivity::class.java)
+                startActivity(intent)
             }
             R.id.d_MenuLogout -> {
                 logoutAlertDialog()
