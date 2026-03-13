@@ -102,4 +102,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@android:layout/simple_list_item_2"/>
 
+    <ProgressBar
+        android:id="@+id/rvProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/rvTodoList"
+        app:layout_constraintEnd_toEndOf="@+id/rvTodoList"
+        app:layout_constraintStart_toStartOf="@+id/rvTodoList"
+        app:layout_constraintTop_toTopOf="@+id/rvTodoList" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

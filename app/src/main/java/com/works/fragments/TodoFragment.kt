@@ -42,7 +42,9 @@ class TodoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // firebase get data
+        // progress bar start
+        binding.rvProgressBar.visibility = View.VISIBLE
+
         db.collection("todos").get()
         .addOnSuccessListener { result ->
             for (document in result) {
@@ -55,6 +57,7 @@ class TodoFragment : Fragment() {
                 val docTodo = DocTodo(document.id, todo)
                 dotoList.add(docTodo)
             }
+            binding.rvProgressBar.visibility = View.GONE
             adapter.notifyDataSetChanged()
             Log.d("TodoFragment", "dotoList: $dotoList")
         }

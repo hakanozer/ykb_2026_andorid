@@ -2,6 +2,7 @@ package com.works.activity
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -19,8 +20,11 @@ import com.google.android.material.navigation.NavigationView
 import com.works.R
 import com.works.fragments.ProfileFragment
 import com.works.fragments.TodoFragment
+import com.works.utils.BatteryReceiver
 
 class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var batteryReceiver: BatteryReceiver
 
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
@@ -36,6 +40,10 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         sharedPreferences = getSharedPreferences("app_pref", MODE_PRIVATE)
         editor = sharedPreferences.edit()
+
+        batteryReceiver = BatteryReceiver()
+        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        registerReceiver(batteryReceiver, filter)
 
         // show actionbar
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
@@ -120,6 +128,11 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(batteryReceiver)
     }
 
 }
