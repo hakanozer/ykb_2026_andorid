@@ -8,6 +8,9 @@
         android:id="@+id/d_MenuNotes"
         android:title="Notes" />
     <item
+        android:id="@+id/d_MenuSettings"
+        android:title="Settigns" />
+    <item
         android:id="@+id/d_MenuLogout"
         android:title="Logout" />
 </menu>

@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.works.R
+import com.works.compose.SettingsActivity
 import com.works.fragments.MapsFragment
 import com.works.fragments.ProfileFragment
 import com.works.fragments.TodoFragment
@@ -86,6 +87,10 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
             R.id.d_MenuNotes -> {
                 val intent = Intent(this, NotesActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.d_MenuSettings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
             }
             R.id.d_MenuLogout -> {
