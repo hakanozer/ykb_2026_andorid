@@ -7,4 +7,8 @@
         android:id="@+id/nav_todo"
         android:icon="@android:drawable/ic_menu_edit"
         android:title="Todo" />
+    <item
+        android:id="@+id/nav_maps"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="Map" />
 </menu>

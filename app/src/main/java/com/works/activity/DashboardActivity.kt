@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.works.R
+import com.works.fragments.MapsFragment
 import com.works.fragments.ProfileFragment
 import com.works.fragments.TodoFragment
 import com.works.utils.BatteryReceiver
@@ -123,6 +124,11 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             R.id.nav_todo -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, TodoFragment())
+                    .commit()
+            }
+            R.id.nav_maps -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, MapsFragment())
                     .commit()
             }
         }
